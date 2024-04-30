@@ -64,6 +64,7 @@ void _startRemixing() {
 
 	// Otherwise, do linear interpolation
 	remixedRecord.add(remixingRecord.get(0));
+	float initHeight, nextHeight;
 	for(int i=1; i<length-1; i++){
 		float[] heights = new float[cols * rows];
 		int floorInd = floor(i * speed);
@@ -71,7 +72,9 @@ void _startRemixing() {
 		float[] floorArr = remixingRecord.get(floorInd);
 		float[] ceilArr = remixingRecord.get(ceilInd);
 		for(int j=0; j<cols*rows; j++) {
-			heights[j] = heightRatio * (floorArr[j] + (ceilArr[j] - floorArr[j]) * (i*speed - (float)floorInd));
+			initHeight = remixingRecord.get(0)[j];
+			nextHeight = (floorArr[j] + (ceilArr[j] - floorArr[j]) * (i*speed - (float)floorInd));
+			heights[j] = initHeight + heightRatio * (nextHeight - initHeight);
 		}
 		remixedRecord.add(heights);
 	}
