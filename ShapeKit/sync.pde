@@ -14,14 +14,31 @@ void _startSync() {
 	isSyncing = true;
 	syncInited = false;
 	String scriptPath = dataPath("../blob_yaxis_ind.py");
+  String pythonPath = "/usr/bin/python3";
+  String workingDir = dataPath("../");
 	println(scriptPath);
-	try {
-		process = Runtime.getRuntime().exec("/usr/local/bin/python3 " + scriptPath);
-		println(process);
-	}
-	catch (IOException e) {
-		e.printStackTrace();
-	}
+	//try {
+ //   //ProcessBuilder builder = new ProcessBuilder("python3", scriptPath);
+ //   //builder.directory(new File(workingDir));
+ //   //Map<String, String> env = builder.environment();
+ //   //env.put("PYTHONPATH", pythonPath);
+ //   //Process process = builder.start();
+  
+	//	//process = Runtime.getRuntime().exec("/usr/bin/python3 " + scriptPath);
+	//	println(process);
+
+ //   //// Checking for errors
+ //   //InputStream stderr = process.getErrorStream();
+ //   //BufferedReader errorReader = new BufferedReader(new InputStreamReader(stderr));
+ //   //println("Errors (if any):");
+ //   //String line;
+ //   //while ((line = errorReader.readLine()) != null) {
+ //   //  println(line);
+ //   //}
+	//}
+	//catch (IOException e) {
+	//	e.printStackTrace();
+	//}
 }
 
 void _stopSync() {
@@ -93,13 +110,15 @@ void updateSyncHeights(int i,int j) {
 }
 
 void drawSyncCubes(float startX, float startY) {
-	if (!heightsSynced){
-		return;
-	}
+	//if (!heightsSynced){
+	//	return;
+	//}
 
 	for (int i = 0; i < rows; i++) {
 		for (int j = 0; j < cols; j++) {
-			updateSyncHeights(i, j);
+      if (heightsSynced){
+  			updateSyncHeights(i, j);
+      }
 			scene3D.pushMatrix(); // Save the current transformation matrix
 			scene3D.translate(startX + i * spacing, startY + j * spacing, cubeHeights[i][j] / 2); // Position cube based on height
 			scene3D.box(cubeWidth, cubeWidth, cubeHeights[i][j]); // Draw the box with height along z-axis
@@ -109,4 +128,3 @@ void drawSyncCubes(float startX, float startY) {
 
 	heightsSynced = false;
 }
-

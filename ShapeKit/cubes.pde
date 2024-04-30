@@ -3,10 +3,10 @@ import java.io.File;
 int cols = 5;
 int rows = 5;
 float[][] cubeHeights = new float[cols][rows];
-float cubeWidth = 100;
-float cubeDepth = 100;
-float initialHeight = 100;
-float spacing = 110; // Spacing between cubes
+float cubeWidth = 100*ratio;
+float cubeDepth = 100*ratio;
+float initialHeight = 100*ratio;
+float spacing = 110*ratio; // Spacing between cubes
 boolean[][] keyActive = new boolean[cols][rows];
 
 int blinkInterval = 30; // Duration for blinking effect (in frames)
@@ -14,7 +14,7 @@ int lastBlinkTime = 0; // Store the last time the light blinked
 
 
 PGraphics setupCubes(){
-	PGraphics scene3D = createGraphics(1000, 1000, P3D);
+	PGraphics scene3D = createGraphics(int(1000*ratio), int(1000*ratio), P3D);
 	// Initialize all cube heigerehts
 	for (int i = 0; i < cols; i++) {
 		for (int j = 0; j < rows; j++) {
@@ -110,4 +110,3 @@ void drawLiveCubes(float startX, float startY) {
 		}
 	}
 }
-

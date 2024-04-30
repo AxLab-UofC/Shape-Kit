@@ -16,9 +16,9 @@ void setScrollableList(ControlP5 cp5) {
 		selectedItemList[i] = "";
 	}
 
-	int bg_width = 700;
-	int[] bg_heights = {450, 400, 650};
-	int bg_x = width*3/4 - 350;
+	int bg_width = int(700*ratio);
+	int[] bg_heights = {int(450*ratio), int(400*ratio), int(650*ratio)};
+	int bg_x = width*3/4 - (int)(350*ratio);
 	int bg_y = height/5;
 
 	for(int i=1; i<tabs.length; i++){

@@ -4,8 +4,8 @@ Textfield fname_remixing;
 void setTextField(ControlP5 cp5) {
 	fname_record = cp5.addTextfield("nameRecording")
 		.setLabel("")
-		.setPosition(width*3/4 - 200, height*5/6 - 100)
-		.setSize(550,40)
+		.setPosition(width*3/4 - 190*ratio, height*5/6 - 100*ratio)
+		.setSize(int(540*ratio), int(40*ratio))
 		.setFont(createFont("Arial", 20))
 		.setColor(color(0))
 		.setColorBackground(color(255))
@@ -16,16 +16,16 @@ void setTextField(ControlP5 cp5) {
 		.moveTo("Recording");
 
 	cp5.addTextlabel("fnameRecording")
-		.setPosition(width*3/4 - 350, height*5/6 - 95)
+		.setPosition(width*3/4 - 350*ratio, height*5/6 - 95*ratio)
 		.setText("File Name:")
-		.setFont(createFont("Arial", 25))
+		.setFont(createFont("Arial", 23))
 		.setColorValue(0)
 		.moveTo("Recording");
 
 	fname_remixing = cp5.addTextfield("nameRemixing")
 		.setLabel("")
-		.setPosition(width*3/4 - 200, height*5/6 - 100)
-		.setSize(550,40)
+		.setPosition(width*3/4 - 190*ratio, height*5/6 - 100*ratio)
+		.setSize(int(540*ratio),int(40*ratio))
 		.setFont(createFont("Arial", 20))
 		.setColor(color(0))
 		.setColorBackground(color(255))
@@ -36,9 +36,9 @@ void setTextField(ControlP5 cp5) {
 		.moveTo("Remixing");
 
 	cp5.addTextlabel("fnameRemixing")
-		.setPosition(width*3/4 - 350, height*5/6 - 95)
+		.setPosition(width*3/4 - 350*ratio, height*5/6 - 95*ratio)
 		.setText("File Name:")
-		.setFont(createFont("Arial", 25))
+		.setFont(createFont("Arial", 23))
 		.setColorValue(0)
 		.moveTo("Remixing");
 }
@@ -48,6 +48,6 @@ void drawTextFieldBackground() {
 		// Draw background behind textfield
 		stroke(255, 229, 24);
 		strokeWeight(6);
-		rect(width*3/4 - 200, height*5/6 - 100, 550, 40);
+		rect(width*3/4 - 190*ratio, height*5/6 - 100*ratio, 540*ratio, 40*ratio);
 	}
 }

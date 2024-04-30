@@ -4,9 +4,10 @@ PFont buttonFont; // = createFont("Roboto", 16, true); // Create a custom font f
 // Buttons on the default tab
 void setDefaultButtons(ControlP5 cp5) {
 	Button startSyncButton = cp5.addButton("startSync")
-		.setPosition(width*3/4 - 350, height/2)
-		.setSize(300, 50)
-		.setLabel("Start synchronizing")
+		.setPosition(width*3/4 - 350*ratio, height/2)
+		.setSize(int(300*ratio), int(50*ratio))
+		//.setLabel("Start synchronizing")
+    .setLabel("Start sync")
 		.setColorBackground(color(255, 229, 24))  // Yellow background
 		.setColorForeground(color(255, 220, 0))
 		.setColorActive(color(255, 220, 0))  // Darker yellow when pressed
@@ -25,9 +26,10 @@ void setDefaultButtons(ControlP5 cp5) {
 
 
 	Button stopSyncButton = cp5.addButton("endSync")
-		.setPosition(width*3/4 + 50, height/2)
-		.setSize(300, 50)
-		.setLabel("End synchronizing")
+		.setPosition(width*3/4 + 50*ratio, height/2)
+		.setSize(int(300*ratio), int(50*ratio))
+		//.setLabel("End synchronizing")
+    .setLabel("End sync")
 		.setColorBackground(color(255, 229, 24))  // Yellow background
 		.setColorForeground(color(255, 220, 0))
 		.setColorActive(color(255, 220, 0))  // Darker yellow when pressed
@@ -48,8 +50,8 @@ void setDefaultButtons(ControlP5 cp5) {
 // Buttons on the Record tab
 void setRecordButtons(ControlP5 cp5) {
 	Button startRecordingButton = cp5.addButton("startRecording")
-		.setPosition(width*3/4 - 350, height*5/6)
-		.setSize(300, 50)
+		.setPosition(width*3/4 - 350*ratio, height*5/6)
+		.setSize(int(300*ratio), int(50*ratio))
 		.setLabel("RDCORD")
 		.setColorBackground(color(255, 229, 24))  // Yellow background
 		.setColorForeground(color(255, 220, 0))
@@ -68,8 +70,8 @@ void setRecordButtons(ControlP5 cp5) {
 	});
 
 	Button stopRecordingButton = cp5.addButton("stopRecording")
-		.setPosition(width*3/4 + 50, height*5/6)
-		.setSize(300, 50)
+		.setPosition(width*3/4 + 50*ratio, height*5/6)
+		.setSize(int(300*ratio), int(50*ratio))
 		.setLabel("STOP")
 		.setColorBackground(color(255, 229, 24))  // Yellow background
 		.setColorForeground(color(255, 220, 0))
@@ -88,8 +90,8 @@ void setRecordButtons(ControlP5 cp5) {
 	});
 
 	Button playingRecordingButton = cp5.addButton("playRecording")
-		.setPosition(width*3/4 - 120, height*3/4 - 125)
-		.setSize(200, 40)
+		.setPosition(width*3/4 - 120*ratio, height*3/4 - 125*ratio)
+		.setSize(int(200*ratio), int(40*ratio))
 		.setLabel("PLAY")
 		.setColorBackground(color(255,255,255))  // Yellow background
 		.setColorForeground(color(255, 220, 0))
@@ -108,8 +110,8 @@ void setRecordButtons(ControlP5 cp5) {
 	});
 
 	Button deleteRecordingButton = cp5.addButton("deleteRecording")
-		.setPosition(width*3/4 + 120, height*3/4 - 125)
-		.setSize(200, 40)
+		.setPosition(width*3/4 + 120*ratio, height*3/4 - 125*ratio)
+		.setSize(int(200*ratio), int(40*ratio))
 		.setLabel("DELETE")
 		.setColorBackground(color(255,255,255))  // Yellow background
 		.setColorForeground(color(255, 220, 0))
@@ -131,8 +133,8 @@ void setRecordButtons(ControlP5 cp5) {
 // Buttons on the Remixing tax
 void setRemixingButtons(ControlP5 cp5) {
 	Button resetRemixingButton = cp5.addButton("resetRemixing")
-		.setPosition(width*3/4 - 350, height*5/6)
-		.setSize(300, 50)
+		.setPosition(width*3/4 - 350*ratio, height*5/6)
+		.setSize(int(300*ratio), int(50*ratio))
 		.setLabel("RESET")
 		.setColorBackground(color(255, 229, 24))  // Yellow background
 		.setColorForeground(color(255, 220, 0))
@@ -152,8 +154,8 @@ void setRemixingButtons(ControlP5 cp5) {
 	});
 
 	Button saveRemixingButton = cp5.addButton("saveRemixing")
-		.setPosition(width*3/4 + 50, height*5/6)
-		.setSize(300, 50)
+		.setPosition(width*3/4 + 50*ratio, height*5/6)
+		.setSize(int(300*ratio), int(50*ratio))
 		.setLabel("SAVE")
 		.setColorBackground(color(255, 229, 24))  // Yellow background
 		.setColorForeground(color(255, 220, 0))
@@ -172,8 +174,8 @@ void setRemixingButtons(ControlP5 cp5) {
 	});
 
 	Button startRemixingButton = cp5.addButton("startRemixing")
-		.setPosition(width*3/4 + 120, height*3/4 - 210)
-		.setSize(210, 40)
+		.setPosition(width*3/4 + 120*ratio, height*3/4 - 210*ratio)
+		.setSize(int(210*ratio), int(40*ratio))
 		.setLabel("REMIX")
 		.setColorBackground(color(255,255,255))  // Yellow background
 		.setColorForeground(color(255, 220, 0))
@@ -196,8 +198,8 @@ void setRemixingButtons(ControlP5 cp5) {
 void setPlayingButtons(ControlP5 cp5) {
 	// Buttons for controlling recording
 	Button starPlayingButton = cp5.addButton("startPlaying")
-		.setPosition(width*3/4 - 350, height*5/6)
-		.setSize(300, 50)
+		.setPosition(width*3/4 - 350*ratio, height*5/6)
+		.setSize(int(300*ratio), int(50*ratio))
 		.setLabel("PLAY")
 		.setColorBackground(color(255, 229, 24))  // Yellow background
 		.setColorForeground(color(255, 220, 0))
@@ -216,8 +218,8 @@ void setPlayingButtons(ControlP5 cp5) {
 	});
 
 	Button stopPlayingButton = cp5.addButton("stopPlaying")
-		.setPosition(width*3/4 + 50, height*5/6)
-		.setSize(300, 50)
+		.setPosition(width*3/4 + 50*ratio, height*5/6)
+		.setSize(int(300*ratio), int(50*ratio))
 		.setLabel("STOP")
 		.setColorBackground(color(255, 229, 24))  // Yellow background
 		.setColorForeground(color(255, 220, 0))
@@ -242,13 +244,13 @@ void drawButtonBackground() {
 		// Draw backbround behind play and delete button
 		fill(255, 229, 24);
 		noStroke();
-		rect(width*3/4 - 350, height*3/4 - 140, 700, 70);
+		rect(width*3/4 - 350*ratio, height*3/4 - 140*ratio, 700*ratio, 70*ratio);
 	}
 
 	if (activeTabIndex == 2){
 		// Draw backbround behind play and delete button
 		fill(255, 229, 24);
 		noStroke();
-		rect(width*3/4 - 350, height*3/4 - 220, 700, 60);
+		rect(width*3/4 - 350*ratio, height*3/4 - 220*ratio, 700*ratio, 60*ratio);
 	}
 }

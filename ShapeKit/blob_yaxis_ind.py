@@ -5,11 +5,11 @@ from pythonosc import udp_client
 from pythonosc.dispatcher import Dispatcher
 import threading
 
-DEBUG_FLAG = False
+DEBUG_FLAG = True
 
 y = 920
-alpha = np.array([1.2]) # Simple contrast control
-beta = np.array([0]) # Simple brightness control
+alpha = np.array([1.2]) # Simple contrast control, larger value, larger contrast
+beta = np.array([0]) # Simple brightness control, larger value, larger brightness
 
 
 class Client:
@@ -37,8 +37,8 @@ def setupSimpleBlobDetector():
 	params.minDistBetweenBlobs = 30
 
 	# Change thresholds
-	params.minThreshold = 80;
-	params.maxThreshold = 255;
+	params.minThreshold = 80;  #something I can fine tune
+	params.maxThreshold = 255;  #
 	params.thresholdStep = 10
 	 
 	# Filter by Area.
@@ -92,8 +92,8 @@ def detect_blobs(frame, y, alpha, beta, detector):
 		cv2.imshow('im_with_line', im_with_line)
 
 		keypoints = sorted([k.pt for k in points])
-		print(len(keypoints), keypoints)
-		print()
+		# print(len(keypoints), keypoints)
+		# print()
 
 	else:
 		keypoints = sorted([k.pt for k in detector.detect(frame)])

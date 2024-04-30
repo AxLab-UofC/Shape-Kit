@@ -105,4 +105,3 @@ void drawRemixingCubes(float startX, float startY) {
 	remixFrameInd += 1;
 	checkRemixingEnd();
 }
-

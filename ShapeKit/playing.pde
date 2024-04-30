@@ -99,9 +99,3 @@ void drawPlayingCubes(float startX, float startY) {
 	playingFrameInd += 1;
 	checkPlayingEnd();
 }
-
-
-
-
-
-

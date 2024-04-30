@@ -7,14 +7,20 @@ OscP5 oscP5;
 NetAddress[] server;
 ControlP5 cp5;
 PGraphics scene3D;
-
+float ratio = 0.78;
+float ratioHeight = 0.78;
 void setup() {
 	//launch OSC sercer
 	oscP5 = new OscP5(this, 3333);
 	server = new NetAddress[1];
 	server[0] = new NetAddress("127.0.0.1", 3334);
 
-	size(1980, 1080, P2D);
+//size(displayWidth, displayHeight);
+
+	//size(1920, 1080, P2D);
+  size(1512, 850, P2D);
+  //surface.setResizable(true);
+  //fullScreen();
 	smooth(4);
 	frameRate(60); 
 
@@ -29,7 +35,7 @@ void setup() {
 void draw() {
 	// Set backgound white
 	background(255);
-
+  //scale(0.7);
 	// Draw 3D cubes
 	draw3DScene(scene3D);
 

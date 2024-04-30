@@ -74,6 +74,3 @@ void drawTabs() {
   float currentLinePositionX = lerp(linePositionX, targetLinePositionX, 0.1); // Smoothly interpolate line position
   line(currentLinePositionX, tabHeight, currentLinePositionX + width/16 , tabHeight);
 }
-
-
-

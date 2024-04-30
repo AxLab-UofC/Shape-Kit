@@ -2,8 +2,8 @@ Slider heightSlider, speedSlider;
 
 void setRemixingSliders(ControlP5 cp5) {
 	heightSlider = cp5.addSlider("Height")
-		.setPosition(width*3/4 - 240, height*5/6 - 230)
-		.setSize(590, 40)
+		.setPosition(width*3/4 - 240*ratio, height*5/6 - 230*ratio)
+		.setSize(int(590*ratio), int(40*ratio))
 		.setRange(0,2)
 		.setValue(1.0)
 		.setColorBackground(color(200)) // Set the background color
@@ -12,7 +12,7 @@ void setRemixingSliders(ControlP5 cp5) {
 		.moveTo("Remixing");
 
 	cp5.addTextlabel("labelHeight")
-		.setPosition(width*3/4 - 350, height*5/6 - 230)
+		.setPosition(width*3/4 - 350*ratio, height*5/6 - 230*ratio)
 		.setText("Height")
 		.setFont(createFont("Arial", 25))
 		.setColorValue(0)
@@ -22,8 +22,8 @@ void setRemixingSliders(ControlP5 cp5) {
 	cp5.getController("Height").getCaptionLabel().setVisible(false);
 
 	speedSlider = cp5.addSlider("Speed")
-		.setPosition(width*3/4 - 240, height*5/6 - 170)
-		.setSize(590, 40)
+		.setPosition(width*3/4 - 240*ratio, height*5/6 - 170*ratio)
+		.setSize(int(590*ratio), int(40*ratio))
 		.setRange(0,2)
 		.setValue(1.0)
 		.setColorBackground(color(200)) // Set the background color
@@ -32,7 +32,7 @@ void setRemixingSliders(ControlP5 cp5) {
 		.moveTo("Remixing");
 
 	cp5.addTextlabel("labelSpeed")
-		.setPosition(width*3/4 - 350, height*5/6 - 170)
+		.setPosition(width*3/4 - 350*ratio, height*5/6 - 170*ratio)
 		.setText("Speed")
 		.setFont(createFont("Arial", 25))
 		.setColorValue(0)
