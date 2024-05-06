@@ -134,7 +134,7 @@ def main():
 			measured = np.array([[np.float32(keypoints[0][0])], [np.float32(keypoints[0][1])]])
 			kalman.correct(measured)
 
-		client.send("/setTarget", [predicted_x, predicted_y])
+		client.send("/setTarget", [float(predicted_x), float(predicted_y)])
 
 		if DEBUG_FLAG:
 			if cv2.waitKey(1) == ord('q'):
