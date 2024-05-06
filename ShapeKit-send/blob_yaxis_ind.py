@@ -80,6 +80,18 @@ def brightness(frame, beta):
 	cv2.add(frame, beta, frame)   
 	return
 
+def initialize_kalman_filter():
+    # Initialize a Kalman filter
+    kalman = cv2.KalmanFilter(4, 2)
+    kalman.measurementMatrix = np.array([[1, 0, 0, 0],
+                                         [0, 1, 0, 0]], np.float32)
+    kalman.transitionMatrix = np.array([[1, 0, 1, 0],
+                                        [0, 1, 0, 1],
+                                        [0, 0, 1, 0],
+                                        [0, 0, 0, 1]], np.float32)
+    kalman.processNoiseCov = np.eye(4, dtype=np.float32) * 0.03
+    return kalman
+
 def detect_blobs(frame, y, alpha, beta, detector):
 	frame = subFrameBinary(frame, y)
 	contrast(frame, alpha)
@@ -93,7 +105,7 @@ def detect_blobs(frame, y, alpha, beta, detector):
 
 		keypoints = sorted([k.pt for k in points])
 		# print(len(keypoints), keypoints)
-		# print(max([k[1] for k in keypoints]))
+		# print()
 
 	else:
 		keypoints = sorted([k.pt for k in detector.detect(frame)])
@@ -104,6 +116,7 @@ def main():
 	client = Client()
 	video = cv2.VideoCapture(0)
 	detector = setupSimpleBlobDetector()
+	kalman = initialize_kalman_filter()
 
 	while True:
 		ret, frame = video.read() 
@@ -111,9 +124,17 @@ def main():
 		# if frame is read correctly ret is True
 		if not ret:
 			print("Can't receive frame (stream end?). Exiting ...")
-			
+		
+		predicted = kalman.predict()
+		predicted_x, predicted_y = predicted[0], predicted[1]
+
 		keypoints = detect_blobs(frame, y, alpha, beta, detector)
-		client.send("/setTarget", np.array(keypoints).flatten())
+
+		if keypoints:
+			measured = np.array([[np.float32(keypoints[0][0])], [np.float32(keypoints[0][1])]])
+			kalman.correct(measured)
+
+		client.send("/setTarget", [predicted_x, predicted_y])
 
 		if DEBUG_FLAG:
 			if cv2.waitKey(1) == ord('q'):
