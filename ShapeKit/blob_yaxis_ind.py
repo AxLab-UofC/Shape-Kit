@@ -127,8 +127,7 @@ def main():
 		
 		predicted = kalman.predict()
 		predicted_x, predicted_y = predicted[0], predicted[1]
-
-		keypoints = detect_blobs(frame, y, alpha, beta, detector)
+		keypoints = detect_blobs(frame, 920, alpha, beta, detector)
 
 		if keypoints:
 			measured = np.array([[np.float32(keypoints[0][0])], [np.float32(keypoints[0][1])]])
