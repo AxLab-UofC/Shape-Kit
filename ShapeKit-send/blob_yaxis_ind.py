@@ -69,6 +69,20 @@ def setupSimpleBlobDetector():
         detector = cv2.SimpleBlobDetector_create(params)
     return detector
 
+def subFrameBinary(frame, y):
+	# Convert to binary
+	return cv2.cvtColor(frame[:][:y][:], cv2.COLOR_BGR2GRAY) 
+
+def contrast(frame, alpha):
+	# multiply every pixel value by alpha
+	cv2.multiply(frame, alpha, frame)
+	return
+
+def brightness(frame, beta):
+	# add a beta value to every pixel 
+	cv2.add(frame, beta, frame)   
+	return
+
 def detect_blobs(frame, y, alpha, beta, detector, kf_list):
     frame = cv2.cvtColor(frame[:][:y][:], cv2.COLOR_BGR2GRAY)
     cv2.multiply(frame, alpha, frame)
