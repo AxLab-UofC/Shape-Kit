@@ -7,8 +7,8 @@ import logging
 DEBUG_FLAG = True
 
 y = 920
-alpha = np.array([1.2])  # Simple contrast control, larger value, larger contrast
-beta = np.array([0])  # Simple brightness control, larger value, larger brightness
+alpha = 1.2  # Simple contrast control, larger value, larger contrast
+beta = 0  # Simple brightness control, larger value, larger brightness
 
 app = Flask(__name__)
 logging.basicConfig(level=logging.DEBUG)
@@ -38,7 +38,7 @@ def setupSimpleBlobDetector():
 
     # Change thresholds
     params.minThreshold = 80  # something I can fine tune
-    params.maxThreshold = 255  #
+    params.maxThreshold = 255
     params.thresholdStep = 10
 
     # Filter by Area.
@@ -72,18 +72,18 @@ def subFrameBinary(frame, y):
 
 def contrast(frame, alpha):
     # multiply every pixel value by alpha
-    cv2.multiply(frame, alpha, frame)
-    return
+    frame = cv2.convertScaleAbs(frame, alpha=alpha)
+    return frame
 
 def brightness(frame, beta):
     # add a beta value to every pixel
-    cv2.add(frame, beta, frame)
-    return
+    frame = cv2.convertScaleAbs(frame, beta=beta)
+    return frame
 
 def detect_blobs(frame, y, alpha, beta, detector):
     frame = subFrameBinary(frame, y)
-    contrast(frame, alpha)
-    brightness(frame, beta)
+    frame = contrast(frame, alpha)
+    frame = brightness(frame, beta)
 
     points = detector.detect(frame)
     if DEBUG_FLAG:
