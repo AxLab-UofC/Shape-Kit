@@ -1,0 +1,54 @@
+{
+  "name": "shapekit-app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@react-three/drei": "^9.111.3",
+    "@react-three/fiber": "^8.17.6",
+    "@react-three/postprocessing": "^2.16.2",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/three": "^0.167.2",
+    "body-parser": "^1.20.3",
+    "express": "^4.19.2",
+    "http-proxy-middleware": "^3.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-icons": "^5.3.0",
+    "react-router-dom": "^6.26.1",
+    "react-scripts": "5.0.1",
+    "three": "^0.167.1",
+    "web-vitals": "^2.1.4"
+  },
+  "proxy": "http://localhost:5000",
+  "scripts": {
+    "start": "react-scripts build && node server.js",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.41",
+    "tailwindcss": "^3.4.10"
+  }
+}
