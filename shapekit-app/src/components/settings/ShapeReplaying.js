@@ -58,17 +58,47 @@ const ShapeReplaying = () => {
     }
   }, [currentFrame, replayData]);
 
+  //   useEffect(() => {
+  //     if (playingFile && replayData.length > 0) {
+  //       intervalRef.current = setInterval(() => {
+  //         setCurrentFrame((prevFrame) => (prevFrame + 1) % replayData.length);
+  //       }, 100);
+  //     } else {
+  //       clearInterval(intervalRef.current);
+  //     }
+
+  //     return () => clearInterval(intervalRef.current);
+  //   }, [playingFile, replayData]);
+
+  const sendToArduino = useCallback(async (heights) => {
+    try {
+      await fetch('/api/arduino/send', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ heights }),
+      });
+    } catch (error) {
+      console.error('Failed to send to Arduino:', error);
+    }
+  }, []);
+
   useEffect(() => {
     if (playingFile && replayData.length > 0) {
       intervalRef.current = setInterval(() => {
-        setCurrentFrame((prevFrame) => (prevFrame + 1) % replayData.length);
+        setCurrentFrame((prevFrame) => {
+          const newFrame = (prevFrame + 1) % replayData.length;
+          sendToArduino(replayData[newFrame]);
+          return newFrame;
+        });
       }, 100);
     } else {
       clearInterval(intervalRef.current);
     }
 
     return () => clearInterval(intervalRef.current);
-  }, [playingFile, replayData]);
+  }, [playingFile, replayData, sendToArduino]);
 
   useEffect(() => {
     updateProgress();

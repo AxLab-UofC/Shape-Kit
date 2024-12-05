@@ -129,7 +129,6 @@ app.get('/api/files', async (req, res) => {
 app.use(express.static(path.join(__dirname, 'build')));
 
 
-
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.
 app.get('*', (req, res) => {
@@ -153,3 +152,93 @@ const cleanup = () => {
 // Handle termination signals
 process.on('SIGINT', cleanup);
 process.on('SIGTERM', cleanup);
+
+// *------sending to arduino for replay ------*
+
+const { SerialPort } = require('serialport');
+
+// Try to find the Arduino port
+async function findArduinoPort() {
+  const ports = await SerialPort.list();
+  const arduinoPort = ports.find(
+    (port) => port.manufacturer?.includes('Arduino') || port.vendorId === '2341' // Arduino vendor ID
+  );
+  return arduinoPort?.path;
+}
+
+// Modified Arduino connection setup
+let arduinoPort;
+
+async function setupArduinoConnection() {
+  try {
+    const portPath = await findArduinoPort();
+    if (!portPath) {
+      console.error('No Arduino found');
+      return;
+    }
+
+    arduinoPort = new SerialPort({
+      path: portPath,
+      baudRate: 57600,
+    });
+
+    arduinoPort.on('error', (err) => {
+      console.error('Serial port error:', err);
+    });
+
+    arduinoPort.on('open', () => {
+      console.log('Serial port opened successfully');
+    });
+  } catch (error) {
+    console.error('Failed to setup Arduino connection:', error);
+  }
+}
+
+// Call this when your server starts
+setupArduinoConnection();
+
+// Modify your endpoint to use the arduinoPort variable
+app.post('/api/arduino/send', async (req, res) => {
+  if (!arduinoPort || !arduinoPort.isOpen) {
+    return res.status(500).send('Arduino not connected');
+  }
+
+  try {
+    const { heights } = req.body;
+    const servoPositions = convertHeightsToServoPositions(heights);
+    const message = `<${servoPositions.join(',')}>`;
+
+    arduinoPort.write(message, (err) => {
+      if (err) {
+        console.error('Error writing to serial port:', err);
+        res.status(500).send('Failed to send data to Arduino');
+      } else {
+        res.status(200).send('Data sent to Arduino');
+      }
+    });
+  } catch (error) {
+    console.error('Error sending to Arduino:', error);
+    res.status(500).send('Error sending to Arduino');
+  }
+});
+
+
+function convertHeightsToServoPositions(heights) {
+  // Convert heights (1.0-1.6) to servo positions (SERVOMIN-SERVOMAX)
+  const SERVOMIN = 130;
+  const SERVOMAX = 480;
+  const positions = [];
+
+  for (let i = 0; i < heights.length; i++) {
+    for (let j = 0; j < heights[i].length; j++) {
+      const height = heights[i][j];
+      // Map height from 1.0-1.6 to SERVOMIN-SERVOMAX
+      const position = Math.floor(
+        ((height - 1.0) / 0.6) * (SERVOMAX - SERVOMIN) + SERVOMIN
+      );
+      positions.push(position);
+    }
+  }
+
+  return positions;
+}

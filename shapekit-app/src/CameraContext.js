@@ -210,6 +210,9 @@ export const CameraProvider = ({ children }) => {
       setError('Reference heights not set. Please calibrate first.');
       return;
     }
+
+    if (isConnected && referenceHeights) setError(null);
+
     setIsSyncing(true);
   }, [isConnected, referenceHeights]);
 

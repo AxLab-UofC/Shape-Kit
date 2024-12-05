@@ -4,7 +4,6 @@ import {
   OrbitControls,
   PerspectiveCamera,
   shaderMaterial,
-  Text,
 } from '@react-three/drei';
 import * as THREE from 'three';
 import {
@@ -65,11 +64,14 @@ const createBeveledBoxGeometry = (width, height, depth, bevelSize) => {
   geometry.rotateX(Math.PI / 2);
   return geometry;
 };
+
+
 const Pin = ({ position, height }) => {
   const groupRef = useRef();
+  // Create a fixed-height geometry (say 1 unit tall)
   const geometry = useMemo(
-    () => createBeveledBoxGeometry(1, height, 1, 0.05),
-    [height]
+    () => createBeveledBoxGeometry(1, 1, 1, 0.05),
+    [] // Remove height dependency
   );
   const material = useMemo(
     () =>
@@ -86,19 +88,22 @@ const Pin = ({ position, height }) => {
 
   useFrame(() => {
     if (groupRef.current) {
-      groupRef.current.position.y = height / 2;
+      // Just update the Y position based on height
+      groupRef.current.position.y = height - 0.5; // Subtract 0.5 to center the pin
     }
   });
 
   return (
     <group position={position}>
-      <group ref={groupRef} position={[0, -height / 2, 0]}>
+      <group ref={groupRef} position={[0, 0, 0]}>
+        {' '}
+        {/* Remove initial Y offset */}
         <mesh
           geometry={geometry}
           material={material}
           castShadow
           receiveShadow
-        ></mesh>
+        />
         <lineSegments>
           <edgesGeometry args={[geometry]} />
           <gradientLineMaterial

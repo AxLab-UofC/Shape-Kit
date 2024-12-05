@@ -1,70 +1,175 @@
-# Getting Started with Create React App
+# ShapeKit
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+An interactive shape manipulation and recording system using computer vision and Arduino-controlled servo motors. The system allows real-time tracking and recording of physical pin movements, with both digital visualization and hardware control.
 
-## Available Scripts
+## Prerequisites
 
-In the project directory, you can run:
+### Software Requirements
+- Node.js >= 20.12.2
+- npm >= 10.5.0
+- Python 3.9
+- Arduino IDE
 
-### `npm start`
+To verify your Node.js and npm versions:
+```bash
+node --version  # Should show v20.12.2 or higher
+npm --version   # Should show 10.5.0 or higher
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Project Structure
+```
+shapekit-app/
+├── arduino/           # Arduino firmware
+├── build/            # Production build (auto-generated)
+├── files/            # Storage for recorded files
+├── public/           # Static assets
+├── src/              # React frontend source code
+├── app.py            # Python camera/detection backend
+├── server.js         # Node.js server
+├── requirements.txt  # Python dependencies
+└── package.json      # Node.js dependencies
+```
 
-### `npm test`
+## Installation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 1. Python Setup
 
-### `npm run build`
+Choose either conda or venv for your virtual environment:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+#### Option A: Using Conda(need download)
+```bash
+# Create and activate conda environment
+conda create -n shapekit python=3.9
+conda activate shapekit
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+# Install requirements
+pip install -r requirements.txt
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+#### Option B: Using Virtual Environment (venv)
+```bash
+# Create virtual environment
+python -m venv venv
 
-### `npm run eject`
+# Activate virtual environment
+# On Windows:
+venv\Scripts\activate
+# On macOS/Linux:
+source venv/bin/activate
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+# Install requirements
+pip install -r requirements.txt
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Note: Make sure you have activated your virtual environment (either conda or venv) before starting the application.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### 2. Node.js Setup
+```bash
+# Install dependencies
+npm install
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### 3. Arduino Setup
+1. Open Arduino IDE
+2. Navigate to `arduino/Arduino_code_ran.ino`
+3. Upload the code to your Arduino board
 
-## Learn More
+## Running the Application
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+1. Ensure your conda environment is active:
+```bash
+conda activate shapekit
+```
+or
+# On Windows:
+```bash
+venv\Scripts\activate
+```
+# On macOS/Linux:
+```bash
+source venv/bin/activate
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+2. Start the application:
+```bash
+npm start
+```
+This will:
+- Build the React frontend
+- Start the Node.js server
+- The app will be available at `http://localhost:3001`
 
-### Code Splitting
+## Usage Guide
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### Analyzing the Bundle Size
+#### Shape Sync
+1. Click "Calibrate" button
+2. Use "Start Syncing" for real-time tracking
+3. System will track and replicate physical pin movements
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+#### Shape Recorder
+1. Enter a name for your recording
+2. Click "Calibrate" if needed
+3. Use Record/Stop buttons
+4. Files save automatically
 
-### Making a Progressive Web App
+##### File Storage
+Recorded patterns are stored in the `files` directory
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Advanced Configuration
+#### Pattern Tuner
+- Load existing recordings
+- Create variations
+- Mix different patterns
+- Save new combinations
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+#### Shape Replay
+- Select recorded files
+- Use progress bar for playback control
+- Physical pins will move if Arduino is connected
 
-### Deployment
+## Troubleshooting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### Camera Connection
+- Verify USB connection
+- Check for other applications using camera
+- Ensure proper lighting
+- Try disconnecting/reconnecting
 
-### `npm run build` fails to minify
+### Arduino Issues
+- Check USB connection
+- Verify correct firmware upload
+- Confirm power supply adequacy
+- Check servo connections
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Common Problems
+1. Camera Not Found:
+   - Restart application
+   - Check USB connection
+   - Verify camera permissions
+
+2. Arduino Not Responding:
+   - Check connection
+   - Verify correct firmware
+   - Ensure power supply
+
+3. Poor Tracking:
+   - Improve lighting
+   - Recalibrate system
+   - Adjust camera position
+
+## Development Notes
+- React frontend with Three.js for 3D visualization
+- Node.js backend with Express
+- Python OpenCV for camera processing
+- Arduino serial communication for hardware control
+
+
+## Project Dependencies
+See:
+- `package.json` for Node.js dependencies
+- `requirements.txt` for Python packages
+- Required Arduino library: `Adafruit_PWMServoDriver`
+
+

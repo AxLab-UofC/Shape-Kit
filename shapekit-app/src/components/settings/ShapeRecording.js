@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import ShapeDisplay from './ShapeDisplay';
 import VideoFeed from '../VideoFeed';
 import FileList from './FileList';
-import BreathingDot from './BreathingDot';
 import { useCameraContext } from '../../CameraContext';
 import { saveFile, listFiles, getFile, deleteFile } from '../../utils/fileApi';
 
@@ -90,11 +89,17 @@ const ShapeRecording = () => {
       <div className="flex flex-1 space-x-6">
         <div className="w-3/4">
           <div
-            className="bg-white rounded-lg shadow-lg border-2 border-black"
+            className={`relative bg-white rounded-lg shadow-lg border-2 ${
+              isRecording ? 'border-[#FFE500]' : 'border-black'
+            }`}
             style={{ aspectRatio: '4/3' }}
           >
             <ShapeDisplay pinHeights={pinHeights} />
-            {isRecording && <BreathingDot />}
+            {isRecording && (
+              <div className="absolute top-3 left-3 z-10">
+                <div className="w-6 h-6 bg-[#FFE500] rounded-full animate-[pulse_1s_cubic-bezier(0,0,0.2,1)_infinite] shadow-[0_0_12px_rgba(255,229,0,0.9)] before:content-[''] before:absolute before:inset-0 before:rounded-full before:animate-[ping_1s_cubic-bezier(0,0,0.2,1)_infinite] before:bg-[#FFE500]/50" />
+              </div>
+            )}
           </div>
         </div>
         <div className="w-1/4 flex flex-col">

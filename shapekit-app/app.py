@@ -113,7 +113,7 @@ camera = None
 processing_active = True
 stream_active = True
 last_processed_frame = None
-current_camera = 0
+current_camera = 1
 processing_thread = None
 stream_lock = threading.Lock()
 
