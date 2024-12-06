@@ -1,12 +1,16 @@
-# ShapeKit
+# Shape-Kit
 
+Official web-version implmentation of CHI 25' paper: XXX
 An interactive shape manipulation and recording system using computer vision and Arduino-controlled servo motors. The system allows real-time tracking and recording of physical pin movements, with both digital visualization and hardware control.
+
+
 
 ## Prerequisites
 
 ### Software Requirements
 - Node.js >= 20.12.2
-- npm >= 10.5.0
+  - Download from [Node.js Package Manager](https://nodejs.org/en/download/package-manager)
+  - npm >= 10.5.0 (included with Node.js)
 - Python 3.9
 - Arduino IDE
 
@@ -15,6 +19,12 @@ To verify your Node.js and npm versions:
 node --version  # Should show v20.12.2 or higher
 npm --version   # Should show 10.5.0 or higher
 ```
+
+## Development Notes
+- React frontend with Three.js for 3D visualization
+- Node.js backend with Express
+- Python OpenCV for camera processing
+- Arduino serial communication for hardware control
 
 
 ## Project Structure
@@ -180,17 +190,12 @@ The recorded files are stored as JSON arrays, where each frame contains a 5x5 ma
    - Recalibrate system
    - Adjust camera position
 
-## Development Notes
-- React frontend with Three.js for 3D visualization
-- Node.js backend with Express
-- Python OpenCV for camera processing
-- Arduino serial communication for hardware control
 
 
-## Project Dependencies
-See:
-- `package.json` for Node.js dependencies
-- `requirements.txt` for Python packages
-- Required Arduino library: `Adafruit_PWMServoDriver`
+
+## Contact
+For questions, please contact xxxx.
 
 
+## Acknowledgements
+We would like to thanks the
