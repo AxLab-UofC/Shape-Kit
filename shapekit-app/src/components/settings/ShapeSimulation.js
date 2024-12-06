@@ -20,10 +20,12 @@ const ShapeSimulation = () => {
       <div className="flex flex-1 space-x-6">
         <div className="w-3/4">
           <div
-            className="bg-white rounded-lg shadow-lg border-2 border-black"
+            className="bg-white rounded-lg shadow-lg border-2 border-black overflow-hidden p-2"
             style={{ aspectRatio: '4/3' }}
           >
-            <ShapeDisplay pinHeights={pinHeights} />
+            <div className="w-full h-full">
+              <ShapeDisplay pinHeights={pinHeights} />
+            </div>
           </div>
         </div>
         <div className="w-1/4 flex flex-col">

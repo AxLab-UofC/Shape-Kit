@@ -15,7 +15,7 @@ const Home = () => {
     { icon: CgComponents, text: 'Components', path: '/components' },
     {
       icon: PiPlugsConnectedFill,
-      text: 'Camera Connection',
+      text: 'Device Setup',
       path: '/camera-connection',
     },
     { icon: FaCamera, text: 'Start Tracking', path: '/cv-calibration' },

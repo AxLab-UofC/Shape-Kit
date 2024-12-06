@@ -9,9 +9,9 @@ const CameraConnection = () => {
 
   return (
     <MainSection
-      title="Camera Connection"
+      title="Device Setup"
       subtitle="Connect and set up your camera tracking module"
-      buttonText="Next: Calibrate Camera"
+      buttonText="Next: Start Tracking"
       onButtonClick={() => navigate('../cv-calibration')}
     >
       <div className="flex space-x-4">
@@ -19,14 +19,12 @@ const CameraConnection = () => {
           <h3 className="text-lg font-semibold mb-2">
             Step 1: Connect Tracking Module to PC
           </h3>
-          <div className="border rounded-lg p-4">
-            <div className="flex-1 space-y-4">
-              <img
-                src={Image1}
-                alt="Description of Component 1"
-                className="w-full aspect-video object-cover"
-              />
-            </div>
+          <div className="rounded-lg overflow-hidden">
+            <img
+              src={Image1}
+              alt="Description of Component 1"
+              className="w-full aspect-video object-cover"
+            />
           </div>
           <p className="mt-2 text-center">
             Connect the Tracking Module to the PC through USB
@@ -36,14 +34,12 @@ const CameraConnection = () => {
           <h3 className="text-lg font-semibold mb-2">
             Step 2: Mount Tracking Module to ShapeKit
           </h3>
-          <div className="border rounded-lg p-4">
-            <div className="flex-1 space-y-4">
-              <img
-                src={Image2}
-                alt="Description of Component 1"
-                className="w-full aspect-video object-cover"
-              />
-            </div>
+          <div className="rounded-lg overflow-hidden">
+            <img
+              src={Image2}
+              alt="Description of Component 1"
+              className="w-full aspect-video object-cover"
+            />
           </div>
           <p className="mt-2 text-center">
             Mount the Tracking Module to the Window module

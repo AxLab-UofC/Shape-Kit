@@ -82,11 +82,11 @@ npm install
 conda activate shapekit
 ```
 or
-# On Windows:
+#### On Windows:
 ```bash
 venv\Scripts\activate
 ```
-# On macOS/Linux:
+#### On macOS/Linux:
 ```bash
 source venv/bin/activate
 ```
@@ -117,6 +117,27 @@ This will:
 ##### File Storage
 Recorded patterns are stored in the `files` directory
 
+##### Pin Order
+The Shape Display uses a specific pin ordering system as shown below:
+![Pin Order Diagram](./media/pin_order.png)
+
+##### File Format
+The recorded files are stored as JSON arrays, where each frame contains a 5x5 matrix of pin heights:
+```json
+[
+  [ // Frame 1
+    [1.0, 1.2, 1.1, 1.0, 1.3], // Row 1
+    [1.1, 1.0, 1.2, 1.4, 1.1], // Row 2
+    [1.2, 1.3, 1.1, 1.0, 1.2], // Row 3
+    [1.0, 1.1, 1.2, 1.3, 1.1], // Row 4
+    [1.1, 1.2, 1.0, 1.1, 1.2]  // Row 5
+  ],
+  [ // Frame 2
+    // ... next frame's pin heights
+  ]
+  // ... more frames
+]
+```
 
 #### Pattern Tuner
 - Load existing recordings

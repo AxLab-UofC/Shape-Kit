@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FaUser } from 'react-icons/fa';
+
 
 const Header = () => {
   const location = useLocation();
@@ -35,14 +35,7 @@ const Header = () => {
                 </Link>
               </li>
             ))}
-            <li>
-              <Link
-                to="/login"
-                className="flex items-center hover:text-gray-600"
-              >
-                default <FaUser className="ml-1" />
-              </Link>
-            </li>
+
           </ul>
         </nav>
       </div>

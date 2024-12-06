@@ -9,8 +9,8 @@ const Components = () => {
   return (
     <MainSection
       title="Components"
-      subtitle="Explore the components of ShapeKit"
-      buttonText="Set up the platform"
+      subtitle="Explore the components of Shape-Kit"
+      buttonText="Next: Device Setup"
       onButtonClick={() => navigate('../camera-connection')}
     >
       <div className="space-y-6">
@@ -21,7 +21,7 @@ const Components = () => {
         <div className="w-full">
           <img
             src={Image1}
-            alt="Components of ShapeKit"
+            alt="Components of Shape-Kit"
             className="w-full object-cover rounded-lg"
           />
         </div>

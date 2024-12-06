@@ -33,7 +33,7 @@ def setupSimpleBlobDetector():
     params.minDistBetweenBlobs = 30
 
     # Change thresholds
-    params.minThreshold = 80  # something I can fine tune
+    params.minThreshold = 90  # something I can fine tune
     params.maxThreshold = 255
     params.thresholdStep = 10
 

@@ -8,14 +8,14 @@ const HomeContent = () => {
 
   return (
     <MainSection
-      title="ShapeKit"
+      title="Shape-Kit"
       subtitle="A Design Toolkit for Crafting On-Body Expressive Haptics"
       buttonText="Learn More"
       onButtonClick={() => navigate('components')}
     >
       <img
         src={heroImage}
-        alt="ShapeKit hero"
+        alt="Shape-Kit Cover Img"
         className="w-full h-auto object-contain"
       />
     </MainSection>
