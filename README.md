@@ -103,6 +103,7 @@ source venv/bin/activate
 
 2. Start the application:
 ```bash
+cd shapekit-app
 npm start
 ```
 This will:
