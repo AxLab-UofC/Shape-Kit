@@ -22,9 +22,9 @@ const Home = () => {
   ];
 
   return (
-    <div className="flex w-full">
-      <LeftNavSec items={items} />
-      <div className="flex-grow">
+    <div className="flex w-full h-full">
+      <LeftNavSec items={items} className="flex-none" /> {/* Fixed nav */}
+      <div className="flex-1 overflow-y-auto">
         <Routes>
           <Route path="/" element={<HomeContent />} />
           <Route path="/components" element={<Components />} />

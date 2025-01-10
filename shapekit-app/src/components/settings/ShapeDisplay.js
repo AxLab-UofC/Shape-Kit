@@ -121,6 +121,71 @@ const Pin = ({ position, height, id }) => {
   );
 };
 
+const ContainerHousing = () => {
+  // Calculate dimensions based on pin layout
+  const totalPinWidth = PIN_COUNT * SPACING;
+  const wallThickness = 0.15;
+  const baseHeight = 0.2;
+  const wallHeight = 1.2;
+
+  // Calculate total dimensions and offset
+
+  const outerWidth = totalPinWidth  + wallThickness * 2;
+  const outerDepth = totalPinWidth  + wallThickness * 2;
+
+  const containerMaterial = new THREE.MeshStandardMaterial({
+    color: '#E8E8E8', // Slightly lighter grey
+    roughness: 0.7, // Good balance for shadow visibility
+    metalness: 0.1, // Low metalness for better shadow contrast
+    envMapIntensity: 0.2,
+    receiveShadow: true,
+  });
+
+  return (
+    <group position={[0.51, -1, 0.51]}>
+      <group position={[0, 0, 0]}>
+        {/* Base */}
+        <mesh position={[0, 0, 0]} material={containerMaterial}>
+          <boxGeometry args={[outerWidth, baseHeight, outerDepth]} />
+        </mesh>
+
+        {/* Front wall */}
+        <mesh
+          position={[0, wallHeight / 2, outerDepth / 2 - wallThickness / 2]}
+          material={containerMaterial}
+        >
+          <boxGeometry args={[outerWidth, wallHeight, wallThickness]} />
+        </mesh>
+
+        {/* Back wall */}
+        <mesh
+          position={[0, wallHeight / 2, -outerDepth / 2 + wallThickness / 2]}
+          material={containerMaterial}
+        >
+          <boxGeometry args={[outerWidth, wallHeight, wallThickness]} />
+        </mesh>
+
+        {/* Left wall */}
+        <mesh
+          position={[-outerWidth / 2 + wallThickness / 2, wallHeight / 2, 0]}
+          material={containerMaterial}
+        >
+          <boxGeometry args={[wallThickness, wallHeight, outerDepth]} />
+        </mesh>
+
+        {/* Right wall */}
+        <mesh
+          position={[outerWidth / 2 - wallThickness / 2, wallHeight / 2, 0]}
+          material={containerMaterial}
+        >
+          <boxGeometry args={[wallThickness, wallHeight, outerDepth]} />
+        </mesh>
+      </group>
+    </group>
+  );
+};
+
+
 //  // Input order from video stream
 //     const inputOrder = [
 //       0,9,10,19,20, // First row
@@ -176,6 +241,9 @@ const ShapeDisplay = ({ pinHeights }) => {
       const x = i % PIN_COUNT;
       const y = Math.floor(i / PIN_COUNT);
 
+      const posX = x * SPACING - offset;
+      const posZ = y * SPACING - offset;
+
       // Create mapping lookup table for each display position to camera data position
       const mappingTable = {
         0: [0, 0],
@@ -212,7 +280,7 @@ const ShapeDisplay = ({ pinHeights }) => {
       pins.push(
         <Pin
           key={`${x}-${y}`}
-          position={[x * SPACING - offset, 0, y * SPACING - offset]}
+          position={[posX, 0, posZ]}
           height={height}
           id={displayValue}
         />
@@ -226,9 +294,13 @@ const ShapeDisplay = ({ pinHeights }) => {
     <Canvas style={{ width: '100%', height: '100%' }}>
       <PerspectiveCamera makeDefault position={[7, 7, 7]} fov={50} />
       <color attach="background" args={['#f0f0f0']} />
-      <ambientLight intensity={1.9} />
-      <directionalLight position={[5, 5, 5]} intensity={2} />
-      <group position={[0, 0, 0]}>{pins}</group>
+      <ambientLight intensity={1.7} />
+      <directionalLight position={[3, 8, 4]} intensity={1.8} />
+      <directionalLight position={[-5, 3, -5]} intensity={0.2} />
+      <group position={[0, 0, 0]}>
+        <ContainerHousing />
+        {pins}
+      </group>
       <OrbitControls
         enableRotate={true}
         enablePan={false}

@@ -145,22 +145,30 @@ const ShapeReplaying = () => {
   );
 
   return (
-    <div className="flex flex-col h-screen p-6">
+    <div className="flex flex-col min-h-screen p-6">
       <h1 className="text-2xl font-bold mb-4">Shape Replay</h1>
       <div className="flex flex-1 space-x-6">
         <div className="w-3/4">
-          <div
-            className="bg-white rounded-lg shadow-lg border-2 border-black overflow-hidden p-2"
-            style={{ aspectRatio: '4/3' }}
-          >
-            <div className="w-full h-full">
-              <ShapeDisplay
-                pinHeights={replayData[currentFrame] || defaultPinHeights}
-              />
+          <div className="h-[calc(100vh-8rem)]">
+            <div className="w-full">
+              <div
+                className="bg-white rounded-lg shadow-lg border-2 border-black overflow-hidden p-2"
+                style={{
+                  aspectRatio: '4/3',
+                  maxHeight: 'calc(100vh - 8rem)', // Match parent height constraint
+                  width: 'auto', // Allow width to adjust based on aspect ratio
+                }}
+              >
+                <div className="w-full h-full">
+                  <ShapeDisplay
+                    pinHeights={replayData[currentFrame] || defaultPinHeights}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <div className="w-1/4 flex flex-col">
+        <div className="w-1/4">
           <div className="bg-gray-200 rounded-lg p-4 mb-4">
             <FileList
               files={files}

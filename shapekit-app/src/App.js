@@ -7,7 +7,6 @@ import ShapeSync from './components/ShapeSync';
 import ShapeRecorder from './components/ShapeRecorder';
 import PatternTuner from './components/PatternTuner';
 import ShapeReplay from './components/ShapeReplay';
-// import Login from './components/Login';
 
 const AppContent = () => {
   const { disconnectCamera, isConnected } = useCameraContext();
@@ -29,16 +28,14 @@ const AppContent = () => {
   return (
     <Router>
       <div className="flex flex-col h-screen max-w-screen-2xl mx-auto">
-        <Header />
-        <main className="flex-grow flex overflow-hidden">
+        <Header className="flex-none" /> {/* Fixed header */}
+        <main className="flex-1 flex overflow-hidden">
           <Routes>
             <Route path="/*" element={<Home />} />
             <Route path="/shape-sync" element={<ShapeSync />} />
             <Route path="/touch-recorder" element={<ShapeRecorder />} />
             <Route path="/touch-replay" element={<ShapeReplay />} />
             <Route path="/pattern-tuner" element={<PatternTuner />} />
-
-            {/*<Route path="/login" element={<Login />} /> */}
           </Routes>
         </main>
       </div>

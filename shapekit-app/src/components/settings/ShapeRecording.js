@@ -84,27 +84,33 @@ const ShapeRecording = () => {
   }, []);
 
   return (
-    <div className="flex flex-col h-screen p-6">
+    <div className="flex flex-col min-h-screen p-6">
       <h1 className="text-2xl font-bold mb-4">Shape Recorder</h1>
       <div className="flex flex-1 space-x-6">
         <div className="w-3/4">
-          <div
-            className={`relative bg-white rounded-lg shadow-lg border-2 overflow-hidden p-2 ${
-              isRecording ? 'border-[#FFE500]' : 'border-black'
-            }`}
-            style={{ aspectRatio: '4/3' }}
-          >
-            <div className="w-full h-full">
-              <ShapeDisplay pinHeights={pinHeights} />
-            </div>
-            {isRecording && (
-              <div className="absolute top-3 left-3 z-10">
-                <div className="w-6 h-6 bg-[#FFE500] rounded-full animate-[pulse_1s_cubic-bezier(0,0,0.2,1)_infinite] shadow-[0_0_12px_rgba(255,229,0,0.9)] before:content-[''] before:absolute before:inset-0 before:rounded-full before:animate-[ping_1s_cubic-bezier(0,0,0.2,1)_infinite] before:bg-[#FFE500]/50" />
+          <div className="h-[calc(100vh-8rem)]">
+            <div className="w-full">
+              <div
+                className="bg-white rounded-lg shadow-lg border-2 border-black overflow-hidden p-2"
+                style={{
+                  aspectRatio: '4/3',
+                  maxHeight: 'calc(100vh - 8rem)', // Match parent height constraint
+                  width: 'auto', // Allow width to adjust based on aspect ratio
+                }}
+              >
+                <div className="w-full h-full">
+                  <ShapeDisplay pinHeights={pinHeights} />
+                </div>
+                {isRecording && (
+                  <div className="absolute top-3 left-3 z-10">
+                    <div className="w-6 h-6 bg-[#FFE500] rounded-full animate-[pulse_1s_cubic-bezier(0,0,0.2,1)_infinite] shadow-[0_0_12px_rgba(255,229,0,0.9)] before:content-[''] before:absolute before:inset-0 before:rounded-full before:animate-[ping_1s_cubic-bezier(0,0,0.2,1)_infinite] before:bg-[#FFE500]/50" />
+                  </div>
+                )}
               </div>
-            )}
+            </div>
           </div>
         </div>
-        <div className="w-1/4 flex flex-col">
+        <div className="w-1/4">
           <div className="bg-gray-200 rounded-lg p-4 mb-4">
             <div className="aspect-w-16 aspect-h-9 mb-4">
               <VideoFeed />
