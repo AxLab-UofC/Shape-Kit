@@ -1,0 +1,14 @@
+blinker==1.8.2
+click==8.1.7
+flask==3.0.3
+flask-cors==4.0.1
+importlib-metadata==8.4.0
+itsdangerous==2.2.0
+jinja2==3.1.4
+markupsafe==2.1.5
+numpy==2.0.1
+opencv-python-headless==4.10.0.84
+python-osc==1.8.3
+svgwrite==1.4.3
+werkzeug==3.0.4
+zipp==3.20.0
