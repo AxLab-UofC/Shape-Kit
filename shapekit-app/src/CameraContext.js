@@ -147,12 +147,36 @@ export const CameraProvider = ({ children }) => {
       const response = await fetch('http://localhost:5001/get_pin_heights');
       const data = await response.json();
       const yValues = data.filter((_, index) => index % 2 === 1).reverse();
+      // const yValues = data.filter((_, index) => index % 2 === 1);
       return yValues;
+      console.log("📊 Normalized Y-values:", yValues);
+  
     } catch (error) {
       console.error('Error fetching keypoints:', error);
       return null;
     }
   }, []);
+
+  // const fetchKeypoints = useCallback(async () => {
+  //   try {
+  //     const response = await fetch('http://localhost:5001/get_pin_heights');
+  //     const data = await response.json();
+  //     const yValues = data.filter((_, index) => index % 2 === 1);  // Extract Y
+  
+  //     console.log("📸 Raw Y-values from Python:", yValues);
+  
+  //     // const normalizedY = yValues.map(y => y / 920);  // Normalize 0 to 1
+  //     const normalizedY = yValues.map(y => 1 - (y / 920));
+  
+  //     console.log("📊 Normalized Y-values (0-bottom, 1-top):", normalizedY);
+  
+  //     return normalizedY;
+  //   } catch (error) {
+  //     console.error('Error fetching keypoints:', error);
+  //     return null;
+  //   }
+  // }, []);
+  
 
   const convertKeypointsToHeights = useCallback((keypoints) => {
     const grid = Array(PIN_COUNT)
@@ -196,10 +220,33 @@ export const CameraProvider = ({ children }) => {
         })
       );
 
+      console.log("📐 Updated pin heights for display:", updatedHeights);
+
       setPinHeights(updatedHeights);
     },
     [referenceHeights, pinHeights]
   );
+
+  // const updateSyncHeights = useCallback((newHeights) => {
+  //   if (!referenceHeights) {
+  //     console.error('Reference heights not set. Cannot update sync heights.');
+  //     return;
+  //   }
+  
+  //   const updatedHeights = newHeights.map((height, i) => {
+  //     if (height === null) return pinHeights[i];
+  //     const refHeight = referenceHeights[i];
+  //     const diff = refHeight - height;  // Match Processing
+  //     const mappedDiff = (diff / MAX_DIFF) * (MAX_HEIGHT - MIN_HEIGHT);
+  //     const finalHeight = Math.max(MIN_HEIGHT, Math.min(MAX_HEIGHT, MIN_HEIGHT + mappedDiff));
+  //     return finalHeight;
+  //   });
+  
+  //   console.log("📐 Updated pin heights for display:", updatedHeights);
+  
+  //   setPinHeights(updatedHeights);
+  // }, [referenceHeights, pinHeights]);
+  
 
   const startSyncing = useCallback(async () => {
     if (!isConnected) {
@@ -264,6 +311,10 @@ export const CameraProvider = ({ children }) => {
       debouncedResumeVideoStream.cancel();
     };
   }, [debouncedPauseVideoStream, debouncedResumeVideoStream]);
+
+  useEffect(() => {
+    fetchKeypoints();
+  }, [fetchKeypoints]);
 
   const value = {
     isConnected,

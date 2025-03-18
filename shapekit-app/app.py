@@ -10,6 +10,26 @@ import threading
 import signal
 import atexit
 
+class KalmanFilter:
+    """Encapsulates a Kalman Filter for tracking a blob's x, y position and velocity."""
+    def __init__(self):
+        self.kalman = cv2.KalmanFilter(4, 2)
+        self.kalman.measurementMatrix = np.array([[1, 0, 0, 0],
+                                                  [0, 1, 0, 0]], np.float32)
+        self.kalman.transitionMatrix = np.array([[1, 0, 1, 0],
+                                                 [0, 1, 0, 1],
+                                                 [0, 0, 1, 0],
+                                                 [0, 0, 0, 1]], np.float32)
+        self.kalman.processNoiseCov = np.eye(4, dtype=np.float32) * 0.03
+        self.kalman.measurementNoiseCov = np.eye(2, dtype=np.float32) * 1
+
+    def predict(self):
+        return self.kalman.predict()
+
+    def correct(self, measurement):
+        return self.kalman.correct(measurement)
+
+
 DEBUG_FLAG = True
 
 y = 920
@@ -33,14 +53,14 @@ def setupSimpleBlobDetector():
     params.minDistBetweenBlobs = 30
 
     # Change thresholds
-    params.minThreshold = 90  # something I can fine tune
+    params.minThreshold = 60  # something I can fine tune
     params.maxThreshold = 255
     params.thresholdStep = 10
 
     # Filter by Area.
     params.filterByArea = True
     params.minArea = 500
-    params.maxArea = 2400
+    params.maxArea = 3000
 
     # Filter by Circularity
     params.filterByCircularity = True
@@ -76,12 +96,32 @@ def brightness(frame, beta):
     frame = cv2.convertScaleAbs(frame, beta=beta)
     return frame
 
+# def detect_blobs(frame, y, alpha, beta, detector):
+#     frame = subFrameBinary(frame, y)
+#     frame = contrast(frame, alpha)
+#     frame = brightness(frame, beta)
+
+#     points = detector.detect(frame)
+#     if DEBUG_FLAG:
+#         im_with_keypoints = cv2.drawKeypoints(frame, points, np.array([]), (0, 0, 255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+#         im_with_line = cv2.line(im_with_keypoints, (0, y), (2000, y), (0, 255, 0), 1)
+#         ret, buffer = cv2.imencode('.jpg', im_with_line)
+#     else:
+#         ret, buffer = cv2.imencode('.jpg', frame)
+
+#     if not ret:
+#         logging.error("Failed to encode frame")
+#     frame = buffer.tobytes()
+#     keypoints = sorted([k.pt for k in points])
+#     return frame, keypoints
+
 def detect_blobs(frame, y, alpha, beta, detector):
     frame = subFrameBinary(frame, y)
     frame = contrast(frame, alpha)
     frame = brightness(frame, beta)
 
     points = detector.detect(frame)
+
     if DEBUG_FLAG:
         im_with_keypoints = cv2.drawKeypoints(frame, points, np.array([]), (0, 0, 255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
         im_with_line = cv2.line(im_with_keypoints, (0, y), (2000, y), (0, 255, 0), 1)
@@ -91,19 +131,59 @@ def detect_blobs(frame, y, alpha, beta, detector):
 
     if not ret:
         logging.error("Failed to encode frame")
-    frame = buffer.tobytes()
-    keypoints = sorted([k.pt for k in points])
-    return frame, keypoints
+    frame_bytes = buffer.tobytes()
+
+    # Sort keypoints for consistency
+    sorted_points = sorted([k.pt for k in points])
+    smoothed_keypoints = []
+
+    for i, pt in enumerate(sorted_points):
+        if i >= len(kf_list):
+            break  # Prevent overflow
+        kf = kf_list[i]
+        measurement = np.array([[np.float32(pt[0])], [np.float32(pt[1])]])
+        kf.correct(measurement)
+        prediction = kf.predict()
+        smoothed_keypoints.append((float(prediction[0]), float(prediction[1])))
+
+    return frame_bytes, smoothed_keypoints
+
 
 detector = setupSimpleBlobDetector()
+
+# @app.route('/get_pin_heights')
+# def get_pin_heights():
+#     global last_keypoints
+#     if last_keypoints:
+#         # Convert keypoints to a flat list of coordinates
+#         flat_keypoints = np.array(last_keypoints).flatten().tolist()
+#         return jsonify(flat_keypoints)
+#     else:
+#         return jsonify([])
+
+# @app.route('/get_pin_heights')
+# def get_pin_heights():
+#     global last_keypoints
+#     if last_keypoints:
+#         flat_keypoints = np.array(last_keypoints).flatten().tolist()
+#         y_vals = flat_keypoints[1::2]  # Extract Y-values
+#         logger.info(f"Raw Y-values from camera: {y_vals}")
+#         return jsonify(flat_keypoints)
+#     else:
+#         return jsonify([])
 
 @app.route('/get_pin_heights')
 def get_pin_heights():
     global last_keypoints
     if last_keypoints:
-        # Convert keypoints to a flat list of coordinates
-        flat_keypoints = np.array(last_keypoints).flatten().tolist()
-        return jsonify(flat_keypoints)
+        # Separate X and Y, flip Y
+        flipped_keypoints = []
+        for x, y in last_keypoints:
+            flipped_keypoints.extend([x, 920 - y])  # Keep X, flip Y
+
+        y_vals = flipped_keypoints[1::2]  # Extract flipped Y-values
+        logger.info(f"🔄 Flipped Y-values sent to JS: {y_vals}")
+        return jsonify(flipped_keypoints)
     else:
         return jsonify([])
 
@@ -113,9 +193,12 @@ camera = None
 processing_active = True
 stream_active = True
 last_processed_frame = None
-current_camera = 1
+current_camera = 0
 processing_thread = None
 stream_lock = threading.Lock()
+last_keypoints = []  # Make sure this exists globally
+
+
 
 def get_available_cameras():
     available_cameras = []
@@ -127,6 +210,10 @@ def get_available_cameras():
                 available_cameras.append({"id": str(i), "name": f"Camera {i}"})
             cap.release()
     return available_cameras
+
+
+kf_list = [KalmanFilter() for _ in range(25)]  # Adjust based on max blobs
+
 
 def process_frames():
     global camera, processing_active, last_processed_frame, current_camera, last_keypoints
@@ -142,9 +229,19 @@ def process_frames():
                 time.sleep(1)
                 continue
 
+            # processed_frame, keypoints = detect_blobs(frame, y, alpha, beta, detector)
+            # # last_keypoints = keypoints  # Store the last detected keypoints
+            # # last_processed_frame = processed_frame
+
+            # if keypoints:
+            #     last_keypoints = keypoints
+
+            # last_processed_frame = processed_frame
+
             processed_frame, keypoints = detect_blobs(frame, y, alpha, beta, detector)
-            last_keypoints = keypoints  # Store the last detected keypoints
+            last_keypoints = keypoints  # Already smoothed now!
             last_processed_frame = processed_frame
+
 
             time.sleep(0.01)
 
