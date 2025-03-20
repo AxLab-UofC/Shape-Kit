@@ -6,6 +6,7 @@ import { listFiles, getFile, deleteFile } from '../../utils/fileApi';
 const PIN_COUNT = 5;
 const DEFAULT_HEIGHT = 1;
 
+
 const ShapeReplaying = () => {
   const [files, setFiles] = useState([]);
   const [playingFile, setPlayingFile] = useState(null);
@@ -153,15 +154,27 @@ const ShapeReplaying = () => {
     setReplayData([]);
     setCurrentFrame(0);
     setProgress(0);
+
+    const defaultHeights2D = Array(PIN_COUNT)
+    .fill()
+    .map(() => Array(PIN_COUNT).fill(DEFAULT_HEIGHT));
+
+  try {
+    console.log('📤 Sending RESET to Arduino:', defaultHeights2D);  // Add this log
+    await sendToArduino(defaultHeights2D);
+  } catch (error) {
+    console.error('Failed to reset pins:', error);
+  }
+}, [sendToArduino]);
   
-    const defaultHeightsFlat = Array(PIN_COUNT * PIN_COUNT).fill(DEFAULT_HEIGHT);
-    try {
-      // Send flat array to Arduino
-      await sendToArduino(defaultHeightsFlat);
-    } catch (error) {
-      console.error('Failed to reset pins:', error);
-    }
-  }, [sendToArduino]);
+  //   const defaultHeightsFlat = Array(PIN_COUNT * PIN_COUNT).fill(DEFAULT_HEIGHT);
+  //   try {
+  //     // Send flat array to Arduino
+  //     await sendToArduino(defaultHeightsFlat);
+  //   } catch (error) {
+  //     console.error('Failed to reset pins:', error);
+  //   }
+  // }, [sendToArduino]);
   
 
   return (

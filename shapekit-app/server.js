@@ -7,6 +7,9 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
+const MIN_HEIGHT = 1.0;
+const MAX_HEIGHT = 1.6;
+
 let pythonProcess = null;
 
 // Use body-parser to parse JSON bodies
@@ -212,6 +215,8 @@ app.post('/api/arduino/send', async (req, res) => {
   try {
     const { heights } = req.body;
     const servoPositions = convertHeightsToServoPositions(heights);
+    console.log('📊 Mapped Servo Positions:', servoPositions);  // <-- ADD THIS LINE
+
     const message = `<${servoPositions.join(',')}>`;
 
     arduinoPort.write(message, (err) => {
@@ -239,10 +244,16 @@ function convertHeightsToServoPositions(heights) {
     for (let j = 0; j < heights[i].length; j++) {
       const height = heights[i][j];
       // Map height from 1.0-1.6 to SERVOMIN-SERVOMAX
+      // const position = Math.floor(
+      //   ((height - 1.0) / 0.6) * (SERVOMAX - SERVOMIN) + SERVOMIN
+      // );
       const position = Math.floor(
-        ((height - 1.0) / 0.6) * (SERVOMAX - SERVOMIN) + SERVOMIN
+        ((height - MIN_HEIGHT) / (MAX_HEIGHT - MIN_HEIGHT)) * (SERVOMIN - SERVOMAX) + SERVOMAX
       );
-      positions.push(position);
+
+      const clamped = Math.max(SERVOMIN, Math.min(SERVOMAX, position));
+
+      positions.push(clamped);
     }
   }
 
