@@ -160,9 +160,15 @@ const { SerialPort } = require('serialport');
 // Try to find the Arduino port
 async function findArduinoPort() {
   const ports = await SerialPort.list();
+  console.log('🔍 Available Serial Ports:', ports);
   const arduinoPort = ports.find(
-    (port) => port.manufacturer?.includes('Arduino') || port.vendorId === '2341' // Arduino vendor ID
-  );
+    // (port) => port.manufacturer?.includes('Arduino') || 
+    // port.vendorId === '2341' ||
+    // port.vendorId === '1A86' ||  // CH340 (clone)
+    // port.vendorId === '6790'     // 6790 decimal = 1A86 hex (some systems report decimal)
+    (port) => port.vendorId === '1a86' && port.productId === '7523'
+  );// Arduino vendor ID 
+  
   return arduinoPort?.path;
 }
 

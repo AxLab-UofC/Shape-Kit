@@ -71,6 +71,8 @@ const ShapeReplaying = () => {
   //   }, [playingFile, replayData]);
 
   const sendToArduino = useCallback(async (heights) => {
+    console.log('📤 Sending to Arduino:', heights);  // <== ADD THIS LINE
+
     try {
       await fetch('/api/arduino/send', {
         method: 'POST',
@@ -144,6 +146,24 @@ const ShapeReplaying = () => {
     [replayData]
   );
 
+  //new reset function
+  const handleResetPins = useCallback(async () => {
+    // Stop playback
+    setPlayingFile(null);
+    setReplayData([]);
+    setCurrentFrame(0);
+    setProgress(0);
+  
+    const defaultHeightsFlat = Array(PIN_COUNT * PIN_COUNT).fill(DEFAULT_HEIGHT);
+    try {
+      // Send flat array to Arduino
+      await sendToArduino(defaultHeightsFlat);
+    } catch (error) {
+      console.error('Failed to reset pins:', error);
+    }
+  }, [sendToArduino]);
+  
+
   return (
     <div className="flex flex-col min-h-screen p-6">
       <h1 className="text-2xl font-bold mb-4">Shape Replay</h1>
@@ -180,6 +200,12 @@ const ShapeReplaying = () => {
               progress={progress}
               onProgressChange={handleProgressChange}
             />
+            <button
+              className="w-full bg-white text-gray-800 px-4 py-2 rounded border border-gray-800"
+              onClick={handleResetPins}  // You'll define this function
+            >
+              Reset
+            </button>
           </div>
           {error && <div className="text-red-500 mt-2">{error}</div>}
         </div>
