@@ -69,13 +69,14 @@ cd shapekit-app
    source venv/bin/activate
    ```
    You'll see `(venv)` appear at the start of your terminal line
+   (try python3 instead of python3.9 if the provided comments do not work)
 
-3. Install Python packages:
+4. Install Python packages:
    ```bash
    pip install -r requirements.txt
    ```
 
-4. Install Node.js packages:
+5. Install Node.js packages:
    ```bash
    npm install
    ```
