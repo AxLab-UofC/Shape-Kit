@@ -1,6 +1,6 @@
 # Shape-Kit
 
-Official web-version implementation of CHI 25' paper: XXX
+Official web-version implementation of CHI 25' paper:  Shape-Kit: A Design Toolkit for Crafting On-Body Expressive Haptics
 An interactive shape manipulation and recording system using computer vision and Arduino-controlled servo motors. The system allows real-time tracking and recording of physical pin movements, with both digital visualization and hardware control.
 
 ## Getting Started
